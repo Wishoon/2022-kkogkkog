@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.proxy.Proxy;
+import org.springframework.context.annotation.Profile;
 
+@Profile("test")
 @RequiredArgsConstructor
 public class ProxyConnectionHandler implements InvocationHandler {
 

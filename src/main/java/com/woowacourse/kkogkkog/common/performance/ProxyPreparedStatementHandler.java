@@ -3,7 +3,9 @@ package com.woowacourse.kkogkkog.common.performance;
 import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.proxy.InvocationHandler;
+import org.springframework.context.annotation.Profile;
 
+@Profile("test")
 @RequiredArgsConstructor
 public class ProxyPreparedStatementHandler implements InvocationHandler {
 
