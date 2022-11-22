@@ -22,7 +22,7 @@ class ProxyPreparedStatementHandlerTest {
     }
 
     @Test
-    void Request_Scope에서_execute를_포함한_메서드가_실행되면_쿼리_횟수가_증가한다() throws Throwable {
+    void execute를_포함한_메서드가_실행되면_쿼리_횟수가_증가한다() throws Throwable {
         var executeMethod = preparedStatement.getClass().getMethod("execute");
 
         proxyPreparedStatementHandler.invoke(null, executeMethod, null);
@@ -31,7 +31,7 @@ class ProxyPreparedStatementHandlerTest {
     }
 
     @Test
-    void Request_Scope에서_execute를_포함하지_않은_메서드가_실행되면_쿼리_횟수가_증가하지_않는다() throws Throwable {
+    void execute를_포함하지_않은_메서드가_실행되면_쿼리_횟수가_증가하지_않는다() throws Throwable {
         var executeMethod = preparedStatement.getClass().getMethod("getParameterMetaData");
 
         proxyPreparedStatementHandler.invoke(null, executeMethod, null);
