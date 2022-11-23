@@ -1,5 +1,6 @@
-package com.woowacourse.kkogkkog.auth.application;
+package com.woowacourse.kkogkkog.auth.repository;
 
+import com.woowacourse.kkogkkog.auth.application.OAuthClient;
 import java.util.Map;
 import java.util.Map.Entry;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package com.woowacourse.kkogkkog.auth.infrastructure.client;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.woowacourse.kkogkkog.auth.application.InMemoryClientRepository;
+import com.woowacourse.kkogkkog.auth.repository.InMemoryClientRepository;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
