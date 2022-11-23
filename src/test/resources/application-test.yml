@@ -16,3 +16,9 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+oauth2:
+  github:
+    client-id: "fake-client-id"
+    client-secret: "fake-client-secret"
+    access-token-url: "http://127.0.0.1:8080/login/oauth/access_token"
