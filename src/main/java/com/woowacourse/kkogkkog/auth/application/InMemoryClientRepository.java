@@ -20,6 +20,6 @@ public class InMemoryClientRepository {
             .filter(entry -> entry.getKey().contains(oauthClientName))
             .map(Entry::getValue)
             .findAny()
-            .orElseThrow();
+            .orElseThrow(IllegalArgumentException::new);
     }
 }

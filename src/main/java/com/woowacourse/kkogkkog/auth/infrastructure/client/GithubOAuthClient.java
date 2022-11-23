@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.kkogkkog.auth.application.OAuthClient;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.request.OAuthAccessTokenRequest;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthAccessTokenResponse;
+import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,15 +23,18 @@ public class GithubOAuthClient implements OAuthClient {
     private final String clientId;
     private final String clientSecret;
     private final String accessTokenURL;
+    private final String profileURL;
     private final RestTemplate restTemplate;
 
     public GithubOAuthClient(@Value("${oauth2.github.client-id}") final String clientId,
                              @Value("${oauth2.github.client-secret}") final String clientSecret,
                              @Value("${oauth2.github.access-token-url}") final String accessTokenURL,
+                             @Value("${oauth2.github.profile-url}") final String profileURL,
                              final RestTemplate restTemplate) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.accessTokenURL = accessTokenURL;
+        this.profileURL = profileURL;
         this.restTemplate = restTemplate;
     }
 
@@ -56,6 +60,27 @@ public class GithubOAuthClient implements OAuthClient {
         }
     }
 
+    @Override
+    public OAuthProfileResponse getProfile(final String accessToken) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        httpHeaders.add(HttpHeaders.AUTHORIZATION, "token " + accessToken);
+
+        return invokeProfile(httpHeaders);
+    }
+
+    private OAuthProfileResponse invokeProfile(final HttpHeaders httpHeaders) {
+        try {
+            HttpEntity<?> requestEntity = new HttpEntity<>(httpHeaders);
+            GithubProfileResponse response = restTemplate.exchange(
+                profileURL, HttpMethod.POST, requestEntity, GithubProfileResponse.class).getBody();
+            return new OAuthProfileResponse(
+                response.getGithubId(), response.getEmail(), response.getUsername(), response.getImageUrl());
+        } catch (final Exception e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     @AllArgsConstructor
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
     @Getter
@@ -63,5 +88,23 @@ public class GithubOAuthClient implements OAuthClient {
 
         @JsonProperty("id_token")
         private String accessToken;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    @Getter
+    public static class GithubProfileResponse {
+
+        @JsonProperty("id")
+        private Long githubId;
+
+        @JsonProperty("login")
+        private String username;
+
+        @JsonProperty("email")
+        private String email;
+
+        @JsonProperty("avatar_url")
+        private String imageUrl;
     }
 }

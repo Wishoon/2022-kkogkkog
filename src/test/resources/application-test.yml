@@ -21,4 +21,5 @@ oauth2:
   github:
     client-id: "fake-client-id"
     client-secret: "fake-client-secret"
-    access-token-url: "http://127.0.0.1:8080/login/oauth/access_token"
+    access-token-url: "http://127.0.0.1:8080/api/github/login/oauth/access_token"
+    profile-url: "http://127.0.0.1:8080/api/github/users"
