@@ -25,7 +25,7 @@ public class AuthController {
     public ResponseEntity<AccessTokenResponse> createAccessToken(@PathVariable final String oauthProvider,
                                                                  @RequestBody final AccessTokenRequest request) {
         OAuthProfileResponse oauthProfile = oAuthService.getOauthProfile(oauthProvider, request);
-        AccessTokenResponse tokenResponse = authService.createAccessToken(oauthProfile);
+        AccessTokenResponse tokenResponse = authService.createAccessToken(oauthProvider, oauthProfile);
 
         return ResponseEntity.ok(tokenResponse);
     }
