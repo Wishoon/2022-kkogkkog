@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 @Getter
 @Component
-public class InMemoryClientRepository {
+public class InMemoryOAuthClientRepository {
 
     private final Map<String, OAuthClient> clients;
 
-    public InMemoryClientRepository(final Map<String, OAuthClient> clients) {
+    public InMemoryOAuthClientRepository(final Map<String, OAuthClient> clients) {
         this.clients = clients;
     }
 
