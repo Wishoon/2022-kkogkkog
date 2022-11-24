@@ -12,7 +12,8 @@ class InMemoryClientRepositoryTest {
     @Test
     void OAuthClient_목록들을_관리할_수_있다() {
         InMemoryClientRepository actual = new InMemoryClientRepository(
-            Map.of("GithubOAuthClient", new GithubOAuthClient("id", "secret", "accessTokenURL", "profileURL", new RestTemplate()))
+            Map.of("GithubOAuthClient",
+                new GithubOAuthClient("id", "secret", "accessTokenURL", "profileURL", new RestTemplate()))
         );
 
         assertThat(actual.findByClientName("GithubOAuthClient")).isInstanceOf(GithubOAuthClient.class);

@@ -55,5 +55,4 @@ class TokenProviderTest {
 
         assertThat(tokenProvider.isValidToken(authorizationHeader)).isFalse();
     }
-
 }

@@ -16,7 +16,8 @@ class AuthServiceTest {
 
     @Test
     void OAuthProfile의_정보를_통해_AccessToken을_생성할_수_있다() {
-        OAuthProfileResponse oAuthProfile = new OAuthProfileResponse(1L, "email@gmail.com", "ROOKIE", "https://avatars.githubusercontent.com/u/48710213?s=400&u=c14998dc373586afa6eed653ed8424ec310a47ef&v=4");
+        OAuthProfileResponse oAuthProfile = new OAuthProfileResponse(1L, "email@gmail.com", "ROOKIE",
+            "https://avatars.githubusercontent.com/u/48710213?s=400&u=c14998dc373586afa6eed653ed8424ec310a47ef&v=4");
 
         AccessTokenResponse actual = authService.createAccessToken(oAuthProfile);
 
