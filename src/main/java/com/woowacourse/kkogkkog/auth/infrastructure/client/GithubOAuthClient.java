@@ -74,8 +74,8 @@ public class GithubOAuthClient implements OAuthClient {
             HttpEntity<?> requestEntity = new HttpEntity<>(httpHeaders);
             GithubProfileResponse response = restTemplate.exchange(
                 profileURL, HttpMethod.POST, requestEntity, GithubProfileResponse.class).getBody();
-            return new OAuthProfileResponse(
-                response.getGithubId(), response.getEmail(), response.getUsername(), response.getImageUrl());
+            return new OAuthProfileResponse(String.valueOf(response.getGithubId()), response.getEmail(),
+                response.getUsername(), response.getImageUrl());
         } catch (final Exception e) {
             throw new IllegalArgumentException(e);
         }

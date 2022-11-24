@@ -3,6 +3,8 @@ package com.woowacourse.kkogkkog.auth.application;
 import com.woowacourse.kkogkkog.auth.application.dto.response.AccessTokenResponse;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
 import com.woowacourse.kkogkkog.auth.infrastructure.token.TokenProvider;
+import com.woowacourse.kkogkkog.member.application.MemberService;
+import com.woowacourse.kkogkkog.member.application.dto.MemberCreateOrUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
 
     private final TokenProvider tokenProvider;
+    private final MemberService memberService;
 
-    public AccessTokenResponse createAccessToken(final OAuthProfileResponse oauthProfile) {
-        /**
-         * Member가 존재하는지 여부를 추후 확인해야 함
-         * Member가 이미 존재할 경우 Update 처리를 해줘야 함
-         * */
-        String accessToken = tokenProvider.createAccessToken(oauthProfile.getId());
+    @Transactional
+    public AccessTokenResponse createAccessToken(final String oauthProvider, final OAuthProfileResponse oauthProfile) {
+        Long memberId = memberService.createOrUpdate(
+            new MemberCreateOrUpdateRequest(oauthProfile.getId(), oauthProfile.getEmail(),
+                oauthProfile.getUsername(), oauthProfile.getProfileUrl(), oauthProvider));
+
+        String accessToken = tokenProvider.createAccessToken(memberId);
 
         return new AccessTokenResponse(accessToken);
     }

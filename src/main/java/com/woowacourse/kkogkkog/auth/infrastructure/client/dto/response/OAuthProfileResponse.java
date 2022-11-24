@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OAuthProfileResponse {
 
-    private Long id;
+    private String id;
     private String email;
     private String username;
     private String profileUrl;
 
-    public OAuthProfileResponse(final Long id, final String email, final String username, final String profileUrl) {
+    public OAuthProfileResponse(final String id, final String email, final String username, final String profileUrl) {
         this.id = id;
         this.email = email;
         this.username = username;
