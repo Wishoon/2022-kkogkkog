@@ -16,3 +16,15 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+security:
+  jwt:
+    secret-key: "alfknmeanfgaeownfewalf.afklneaflneaiofnaeoifnewanfea.afofineaoifnanfeakngalneg"
+    expire-length: 36000
+
+oauth2:
+  github:
+    client-id: "fake-client-id"
+    client-secret: "fake-client-secret"
+    access-token-url: "http://127.0.0.1:8080/api/github/login/oauth/access_token"
+    profile-url: "http://127.0.0.1:8080/api/github/users"
