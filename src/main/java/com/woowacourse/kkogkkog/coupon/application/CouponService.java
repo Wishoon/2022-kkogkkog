@@ -1,5 +1,6 @@
 package com.woowacourse.kkogkkog.coupon.application;
 
+import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
 import com.woowacourse.kkogkkog.coupon.domain.Category;
 import com.woowacourse.kkogkkog.coupon.domain.Condition;
@@ -41,4 +42,18 @@ public class CouponService {
             .build();
     }
 
+    public void updateCondition(final Long couponId,
+                                final Long invokeMemberId,
+                                final CouponConditionUpdateRequest request) {
+        validateExistsMember(invokeMemberId);
+        Coupon coupon = couponRepository.getById(couponId);
+
+        coupon.updateCondition(request.getCondition(), invokeMemberId);
+    }
+
+    private void validateExistsMember(final Long invokeMemberId) {
+        if (!memberRepository.existsById(invokeMemberId)) {
+            throw new IllegalArgumentException();
+        }
+    }
 }
