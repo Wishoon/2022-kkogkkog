@@ -57,4 +57,11 @@ public class Coupon extends BaseEntity {
             throw new IllegalArgumentException();
         }
     }
+
+    public Coupon updateCondition(final String invokeCondition, final Long invokeMemberId) {
+        condition.updateValidate(invokeCondition, invokeMemberId, senderId);
+
+        condition = Condition.findCondition(invokeCondition);
+        return new Coupon(id, senderId, receiverId, content, category, condition);
+    }
 }
