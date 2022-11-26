@@ -30,7 +30,7 @@ public class TokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createAccessToken(final Long id) {
+    public String createAccessToken(final Long id, final boolean approval) {
         final Date now = new Date();
         final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -39,17 +39,30 @@ public class TokenProvider {
             .setIssuedAt(now)
             .setExpiration(validity)
             .claim("id", id)
+            .claim("approval", approval)
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact();
     }
 
     public boolean isValidToken(final String authorizationHeader) {
-        final String token = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
+        String token = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
         try {
             final Jws<Claims> claims = getClaimsJws(token);
             return isAccessToken(claims) && isNotExpired(claims);
         } catch (JwtException | IllegalArgumentException e) {
             return false;
+        }
+    }
+
+    public MemberPayload getPayload(final String authorizationHeader) {
+        String accessToken = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
+        Claims body = getClaimsJws(accessToken).getBody();
+        try {
+            Long memberId = body.get("id", Long.class);
+            Boolean approval = body.get("approval", Boolean.class);
+            return new MemberPayload(memberId, approval);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
         }
     }
 

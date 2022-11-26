@@ -39,4 +39,15 @@ class MemberServiceTest {
 
         assertThat(memberRepository.findAll()).hasSize(1);
     }
+
+    @Test
+    void 회원_ID를_통헤_인가여부를_조회할_수_있다() {
+        Long memberId = memberRepository.save(
+            new Member(null, "oauthId-1", "email@gmail.com", "username", "https://profile.com", ProviderType.GITHUB,
+                true)).getId();
+
+        boolean actual = memberService.findApproval(memberId);
+
+        assertThat(actual).isTrue();
+    }
 }

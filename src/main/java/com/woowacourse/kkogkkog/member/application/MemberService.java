@@ -28,6 +28,12 @@ public class MemberService {
         return memberRepository.save(createMember(request)).getId();
     }
 
+    public boolean findApproval(final Long memberId) {
+        Member member = memberRepository.getById(memberId);
+
+        return member.getApproval();
+    }
+
     private static Member createMember(final MemberCreateOrUpdateRequest request) {
         return Member.builder()
             .providerId(request.getProviderId())
