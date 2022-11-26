@@ -1,4 +1,4 @@
-package com.woowacourse.kkogkkog.coupon.application.dto;
+package com.woowacourse.kkogkkog.coupon.application.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;

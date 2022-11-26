@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
-import com.woowacourse.kkogkkog.coupon.application.dto.CouponCreateRequest;
+import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
 import com.woowacourse.kkogkkog.coupon.domain.Category;
 import com.woowacourse.kkogkkog.member.domain.Member;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
