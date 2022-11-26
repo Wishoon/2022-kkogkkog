@@ -41,7 +41,7 @@ class CouponServiceTest {
 
     @Test
     void 쿠폰을_생성에서_존재하지_않는_회원이_포함된_경우_예외가_발생한다() {
-        Long senderId = memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
+        memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
 
         CouponCreateRequest request = new CouponCreateRequest(List.of(999L), "쿠폰의 내용", Category.COFFEE.getValue());
 
