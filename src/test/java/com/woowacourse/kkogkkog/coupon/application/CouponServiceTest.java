@@ -13,6 +13,7 @@ import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.Member;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.member.domain.ProviderType;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -31,20 +32,20 @@ class CouponServiceTest {
         Long senderId = memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
         Long receiverId = memberRepository.save(createMember("oauth-키루-id", "키루@gmail.com", "키루")).getId();
 
-        CouponCreateRequest request = new CouponCreateRequest(senderId, receiverId, "쿠폰의 내용",
-            Category.COFFEE.getValue());
+        CouponCreateRequest request = new CouponCreateRequest(
+            List.of(receiverId), "쿠폰의 내용", Category.COFFEE.getValue());
 
-        Long actual = couponService.create(request);
-        assertThat(actual).isNotNull();
+        couponService.create(1L, request);
+        assertThat(couponRepository.findAll()).hasSize(1);
     }
 
     @Test
     void 쿠폰을_생성에서_존재하지_않는_회원이_포함된_경우_예외가_발생한다() {
         Long senderId = memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
 
-        CouponCreateRequest request = new CouponCreateRequest(senderId, 999L, "쿠폰의 내용", Category.COFFEE.getValue());
+        CouponCreateRequest request = new CouponCreateRequest(List.of(999L), "쿠폰의 내용", Category.COFFEE.getValue());
 
-        assertThatThrownBy(() -> couponService.create(request));
+        assertThatThrownBy(() -> couponService.create(1L, request));
     }
 
     @Test
@@ -53,8 +54,8 @@ class CouponServiceTest {
         Long receiverId = memberRepository.save(createMember("oauth-키루-id", "키루@gmail.com", "키루")).getId();
         Long couponId = couponRepository.save(createCoupon(senderId, receiverId)).getId();
 
-        couponService.updateCondition(couponId, receiverId,
-            new CouponConditionUpdateRequest(Condition.FINISH.getValue()));
+        couponService.updateCondition(
+            couponId, receiverId, new CouponConditionUpdateRequest(Condition.FINISH.getValue()));
 
         assertThat(couponRepository.getById(couponId).getCondition()).isEqualTo(Condition.FINISH);
     }

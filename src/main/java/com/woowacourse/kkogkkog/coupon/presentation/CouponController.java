@@ -5,7 +5,6 @@ import com.woowacourse.kkogkkog.coupon.application.CouponService;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponResponse;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +23,12 @@ public class CouponController {
     private final CouponService couponService;
     private final CouponQueryService couponQueryService;
 
+    // @AuthMember 커스텀 어노테이션을 만들기 전까지 1L로 하드코딩
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody final CouponCreateRequest request) {
-        Long couponId = couponService.create(request);
+        couponService.create(1L, request);
 
-        return ResponseEntity.created(URI.create("/coupon/" + couponId)).build();
+        return ResponseEntity.created(null).build();
     }
 
     @GetMapping("/{couponId}")

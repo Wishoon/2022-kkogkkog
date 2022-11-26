@@ -1,5 +1,6 @@
 package com.woowacourse.kkogkkog.coupon.application.dto.request;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,17 +9,14 @@ import lombok.NoArgsConstructor;
 @Getter
 public class CouponCreateRequest {
 
-    private Long senderId;
-    private Long receiverId;
+    private List<Long> receiverIds;
     private String content;
     private String category;
 
-    public CouponCreateRequest(final Long senderId,
-                               final Long receiverId,
+    public CouponCreateRequest(final List<Long> receiverIds,
                                final String content,
                                final String category) {
-        this.senderId = senderId;
-        this.receiverId = receiverId;
+        this.receiverIds = receiverIds;
         this.content = content;
         this.category = category;
     }

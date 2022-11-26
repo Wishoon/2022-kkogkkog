@@ -7,41 +7,49 @@ import com.woowacourse.kkogkkog.coupon.domain.Condition;
 import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class CouponService {
 
     private final CouponRepository couponRepository;
     private final MemberRepository memberRepository;
 
-    public Long create(final CouponCreateRequest request) {
-        validateExistsBySenderAndReceiver(request.getSenderId(), request.getReceiverId());
+    @Transactional
+    public void create(final Long senderId, final CouponCreateRequest request) {
+        validateExistsBySenderAndReceiver(senderId, request.getReceiverIds());
 
-        Coupon coupon = couponRepository.save(createCoupon(request));
-        return coupon.getId();
+        couponRepository.saveAll(createCoupons(request, senderId));
     }
 
-    private void validateExistsBySenderAndReceiver(final Long senderId, final Long receiverId) {
-        if (!memberRepository.existsById(senderId) || !memberRepository.existsById(receiverId)) {
+    private void validateExistsBySenderAndReceiver(final Long senderId, final List<Long> receiverIds) {
+        if (!memberRepository.existsById(senderId) || !memberRepository.existsByIdIn(receiverIds)) {
             throw new IllegalArgumentException();
         }
     }
 
-    private static Coupon createCoupon(final CouponCreateRequest request) {
+    private static List<Coupon> createCoupons(final CouponCreateRequest request, final Long senderId) {
+        return request.getReceiverIds().stream()
+            .map(receiverId -> createCoupon(request, senderId, receiverId))
+            .collect(Collectors.toList());
+    }
+
+    private static Coupon createCoupon(final CouponCreateRequest request, final Long senderId, final Long receiverId) {
         return Coupon.builder()
-            .senderId(request.getSenderId())
-            .receiverId(request.getReceiverId())
+            .senderId(senderId)
+            .receiverId(receiverId)
             .content(request.getContent())
             .category(Category.findCategory(request.getCategory()))
             .condition(Condition.READY)
             .build();
     }
 
+    @Transactional
     public void updateCondition(final Long couponId,
                                 final Long invokeMemberId,
                                 final CouponConditionUpdateRequest request) {
