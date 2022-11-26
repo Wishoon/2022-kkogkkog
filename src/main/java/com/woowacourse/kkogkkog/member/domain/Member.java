@@ -39,7 +39,7 @@ public class Member extends BaseEntity {
     private ProviderType providerType;
 
     @Column(name = "approval")
-    private boolean approval;
+    private Boolean approval;
 
     @Builder
     public Member(final Long id,
