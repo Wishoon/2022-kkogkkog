@@ -1,5 +1,6 @@
 package com.woowacourse.kkogkkog.coupon.presentation;
 
+import com.woowacourse.kkogkkog.auth.presentation.AuthMember;
 import com.woowacourse.kkogkkog.coupon.application.CouponQueryService;
 import com.woowacourse.kkogkkog.coupon.application.CouponService;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
@@ -23,10 +24,10 @@ public class CouponController {
     private final CouponService couponService;
     private final CouponQueryService couponQueryService;
 
-    // @AuthMember 커스텀 어노테이션을 만들기 전까지 1L로 하드코딩
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody final CouponCreateRequest request) {
-        couponService.create(1L, request);
+    public ResponseEntity<Void> create(@AuthMember Long memberId,
+                                       @RequestBody final CouponCreateRequest request) {
+        couponService.create(memberId, request);
 
         return ResponseEntity.created(null).build();
     }
@@ -38,11 +39,11 @@ public class CouponController {
         return ResponseEntity.ok(response);
     }
 
-    // @AuthMember 커스텀 어노테이션을 만들기 전까지 1L로 하드코딩
     @PutMapping("/{couponId}/condition")
-    public ResponseEntity<Void> updateCondition(@PathVariable Long couponId,
+    public ResponseEntity<Void> updateCondition(@AuthMember Long memberId,
+                                                @PathVariable Long couponId,
                                                 @RequestBody CouponConditionUpdateRequest request) {
-        couponService.updateCondition(couponId, 1L, request);
+        couponService.updateCondition(couponId, memberId, request);
 
         return ResponseEntity.noContent().build();
     }
