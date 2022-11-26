@@ -3,6 +3,7 @@ package com.woowacourse.kkogkkog.auth.infrastructure.token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -30,7 +31,7 @@ public class TokenProvider {
         this.validityInMilliseconds = validityInMilliseconds;
     }
 
-    public String createAccessToken(final Long id) {
+    public String createAccessToken(final Long id, final boolean approval) {
         final Date now = new Date();
         final Date validity = new Date(now.getTime() + validityInMilliseconds);
 
@@ -39,12 +40,13 @@ public class TokenProvider {
             .setIssuedAt(now)
             .setExpiration(validity)
             .claim("id", id)
+            .claim("approval", approval)
             .signWith(secretKey, SignatureAlgorithm.HS256)
             .compact();
     }
 
     public boolean isValidToken(final String authorizationHeader) {
-        final String token = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
+        String token = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
         try {
             final Jws<Claims> claims = getClaimsJws(token);
             return isAccessToken(claims) && isNotExpired(claims);
@@ -53,11 +55,23 @@ public class TokenProvider {
         }
     }
 
+    public MemberPayload getPayload(final String authorizationHeader) {
+        String accessToken = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
+        Claims body = getClaimsJws(accessToken).getBody();
+        try {
+            Long memberId = body.get("id", Long.class);
+            Boolean approval = body.get("approval", Boolean.class);
+            return new MemberPayload(memberId, approval);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     private Jws<Claims> getClaimsJws(final String token) {
-        return Jwts.parserBuilder()
+        JwtParser build = Jwts.parserBuilder()
             .setSigningKey(secretKey)
-            .build()
-            .parseClaimsJws(token);
+            .build();
+        return build.parseClaimsJws(token);
     }
 
     private boolean isAccessToken(final Jws<Claims> claims) {

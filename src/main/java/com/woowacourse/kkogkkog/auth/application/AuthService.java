@@ -22,8 +22,9 @@ public class AuthService {
         Long memberId = memberService.createOrUpdate(
             new MemberCreateOrUpdateRequest(oauthProfile.getId(), oauthProfile.getEmail(),
                 oauthProfile.getUsername(), oauthProfile.getProfileUrl(), oauthProvider));
+        boolean approval = memberService.findApproval(memberId);
 
-        String accessToken = tokenProvider.createAccessToken(memberId);
+        String accessToken = tokenProvider.createAccessToken(memberId, approval);
 
         return new AccessTokenResponse(accessToken);
     }
