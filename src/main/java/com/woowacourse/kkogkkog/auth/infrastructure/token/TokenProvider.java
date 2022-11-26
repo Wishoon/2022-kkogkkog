@@ -3,7 +3,6 @@ package com.woowacourse.kkogkkog.auth.infrastructure.token;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -68,10 +67,10 @@ public class TokenProvider {
     }
 
     private Jws<Claims> getClaimsJws(final String token) {
-        JwtParser build = Jwts.parserBuilder()
+        return Jwts.parserBuilder()
             .setSigningKey(secretKey)
-            .build();
-        return build.parseClaimsJws(token);
+            .build()
+            .parseClaimsJws(token);
     }
 
     private boolean isAccessToken(final Jws<Claims> claims) {
