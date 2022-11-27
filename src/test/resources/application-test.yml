@@ -28,3 +28,8 @@ oauth2:
     client-secret: "fake-client-secret"
     access-token-url: "http://127.0.0.1:8080/api/github/login/oauth/access_token"
     profile-url: "http://127.0.0.1:8080/api/github/users"
+
+alarm:
+  slack:
+    exception:
+      hook-url: "http://127.0.0.1:8080/api/alarm/fake"
