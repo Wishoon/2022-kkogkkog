@@ -2,6 +2,7 @@ package com.woowacourse.kkogkkog.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
@@ -14,8 +15,13 @@ import com.woowacourse.kkogkkog.member.domain.Member;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.member.domain.ProviderType;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 @IntegrationTest
 class CouponServiceTest {
@@ -52,12 +58,34 @@ class CouponServiceTest {
     void 쿠폰의_상태를_변경할_수_있다() {
         Long senderId = memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
         Long receiverId = memberRepository.save(createMember("oauth-키루-id", "키루@gmail.com", "키루")).getId();
-        Long couponId = couponRepository.save(createCoupon(senderId, receiverId)).getId();
+        Long couponId = couponRepository.save(createCoupon(senderId, receiverId, Condition.READY)).getId();
 
         couponService.updateCondition(
             couponId, receiverId, new CouponConditionUpdateRequest(Condition.FINISH.getValue()));
 
         assertThat(couponRepository.getById(couponId).getCondition()).isEqualTo(Condition.FINISH);
+    }
+
+    @Test
+    void 쿠폰의_상태를_변경할_때_먼저_요청된_스레드의_값만_반영된다() throws InterruptedException {
+        Long senderId = memberRepository.save(createMember("oauth-루키-id", "루키@gmail.com", "루키")).getId();
+        Long receiverId = memberRepository.save(createMember("oauth-키루-id", "키루@gmail.com", "키루")).getId();
+        Long couponId = couponRepository.save(createCoupon(senderId, receiverId, Condition.IN_PROGRESS)).getId();
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<?> future1 = executor.submit(() -> couponService.updateCondition(
+            couponId, receiverId, new CouponConditionUpdateRequest(Condition.READY.getValue())));
+        Future<?> future2 = executor.submit(() -> couponService.updateCondition(
+            couponId, receiverId, new CouponConditionUpdateRequest(Condition.FINISH.getValue())));
+
+        Exception result = new Exception();
+        try {
+            future1.get();
+            future2.get();
+        } catch (final ExecutionException e) {
+            result = (Exception) e.getCause();
+        }
+        assertTrue(result instanceof OptimisticLockingFailureException);
     }
 
     private static Member createMember(final String providerId, final String email, final String username) {
@@ -69,13 +97,13 @@ class CouponServiceTest {
             .providerType(ProviderType.GITHUB).build();
     }
 
-    private static Coupon createCoupon(final Long senderId, final Long receiverId) {
+    private static Coupon createCoupon(final Long senderId, final Long receiverId, final Condition condition) {
         return Coupon.builder()
             .senderId(senderId)
             .receiverId(receiverId)
             .content("쿠폰의 내용")
             .category(Category.COFFEE)
-            .condition(Condition.READY)
+            .condition(condition)
             .build();
     }
 }

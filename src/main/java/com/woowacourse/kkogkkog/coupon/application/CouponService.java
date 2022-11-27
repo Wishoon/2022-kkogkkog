@@ -54,7 +54,7 @@ public class CouponService {
                                 final Long invokeMemberId,
                                 final CouponConditionUpdateRequest request) {
         validateExistsMember(invokeMemberId);
-        Coupon coupon = couponRepository.getById(couponId);
+        Coupon coupon = couponRepository.getWithOptimisticLockById(couponId);
 
         coupon.updateCondition(request.getCondition(), invokeMemberId);
     }
