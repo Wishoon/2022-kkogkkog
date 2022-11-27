@@ -2,6 +2,7 @@ package com.woowacourse.kkogkkog.common.exception;
 
 import static com.woowacourse.kkogkkog.common.exception.ErrorType.COMMON_UNHANDLED;
 
+import com.woowacourse.kkogkkog.common.alarm.SlackLogger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,8 @@ public class GlobalControllerAdvice {
 
     /**
      * 예외로 걸러지지 않거나, 예상치 못한 예외들을 처리
-     * TODO: 슬랙으로 알림 전송
      */
+    @SlackLogger
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> unHandledExceptionHandler(final Exception e) {
         log.error("Not Expected Exception is occurred", e);
