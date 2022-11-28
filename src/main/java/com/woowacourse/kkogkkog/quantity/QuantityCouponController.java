@@ -27,7 +27,7 @@ public class QuantityCouponController {
                                        @RequestBody QuantityCouponCreateRequest request) {
         Long quantityCouponId = quantityCouponService.create(memberId, request);
 
-        return ResponseEntity.created(URI.create("/api/quantity-coupon/" + quantityCouponId)).build();
+        return ResponseEntity.created(URI.create("/api/quantity-coupons/" + quantityCouponId)).build();
     }
 
     @PutMapping("/{quantityCouponId}/stock")
