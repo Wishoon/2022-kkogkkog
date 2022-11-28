@@ -12,7 +12,11 @@ public enum MemberFixture {
         "https://no-auth-member-image.com", ProviderType.GITHUB, false),
     인증된_회원("provider-auth-member-id", "auth-member@gmail.com", "auth-member", "https://auth-member-image.com",
         ProviderType.GITHUB, true),
-    ;
+    발신자_회원("provider-sender-member-id", "sender-member@gmail.com", "sender-member", "https://sender-member-image.com",
+        ProviderType.GITHUB, true),
+    수신자_회원("provider-receiver-member-id", "receiver-member@gmail.com", "receiver-member",
+        "https://receiver-member-image.com",
+        ProviderType.GITHUB, true);
 
     private String providerId;
     private String email;
@@ -46,6 +50,18 @@ public enum MemberFixture {
         return new Member(
             null, 인증된_회원.providerId, 인증된_회원.email, 인증된_회원.username,
             인증된_회원.imageUrl, 인증된_회원.providerType, 인증된_회원.approval);
+    }
+
+    public static Member 발신자_회원() {
+        return new Member(
+            null, 발신자_회원.providerId, 발신자_회원.email, 발신자_회원.username,
+            발신자_회원.imageUrl, 발신자_회원.providerType, 발신자_회원.approval);
+    }
+
+    public static Member 수신자_회원() {
+        return new Member(
+            null, 수신자_회원.providerId, 수신자_회원.email, 수신자_회원.username,
+            수신자_회원.imageUrl, 수신자_회원.providerType, 수신자_회원.approval);
     }
 
     // 회원 생성 요청
