@@ -1,5 +1,6 @@
 package com.woowacourse.kkogkkog.quantity.application;
 
+import com.woowacourse.kkogkkog.common.distribute.DistributeLock;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.quantity.application.dto.QuantityCouponCreateRequest;
 import com.woowacourse.kkogkkog.quantity.entity.QuantityCoupon;
@@ -29,6 +30,12 @@ public class QuantityCouponService {
         if (!memberRepository.existsById(memberId)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    @DistributeLock(key = "#key")
+    public void decreaseStock(final String key, final Long quantityCouponId) {
+        QuantityCoupon quantityCoupon = quantityCouponRepository.getById(quantityCouponId);
+        quantityCoupon.decreaseStock();
     }
 
     private static QuantityCoupon createQuantityCoupon(final Long memberId, final QuantityCouponCreateRequest request) {
