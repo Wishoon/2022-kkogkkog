@@ -54,8 +54,7 @@ public class TokenProvider {
         }
     }
 
-    public MemberPayload getPayload(final String authorizationHeader) {
-        String accessToken = tokenExtractor.extractToken(authorizationHeader, ACCESS_TOKEN_TYPE);
+    public MemberPayload getPayload(final String accessToken) {
         Claims body = getClaimsJws(accessToken).getBody();
         try {
             Long memberId = body.get("id", Long.class);
