@@ -59,9 +59,8 @@ class TokenProviderTest {
     @Test
     void 토큰의_payload를_복호화_할_수_있다() {
         String token = tokenProvider.createAccessToken(1L, false);
-        String authorizationHeader = "Bearer " + token;
 
-        MemberPayload actual = tokenProvider.getPayload(authorizationHeader);
+        MemberPayload actual = tokenProvider.getPayload(token);
 
         assertThat(actual).usingRecursiveComparison().isEqualTo(new MemberPayload(1L, false));
     }
