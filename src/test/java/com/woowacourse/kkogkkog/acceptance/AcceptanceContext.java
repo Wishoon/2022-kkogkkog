@@ -45,9 +45,9 @@ public class AcceptanceContext {
             .extract();
     }
 
-    public static ExtractableResponse<Response> invokePutWithToken(String path, Object... data) {
+    public static ExtractableResponse<Response> invokePutWithToken(String path, String token) {
         return RestAssured.given().log().all()
-            .body(data)
+            .auth().oauth2(token)
             .contentType(MediaType.APPLICATION_JSON_VALUE)
             .when()
             .put(path)
