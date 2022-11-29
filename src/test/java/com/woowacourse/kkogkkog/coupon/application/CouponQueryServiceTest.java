@@ -1,10 +1,9 @@
-package coupon.application;
+package com.woowacourse.kkogkkog.coupon.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
-import com.woowacourse.kkogkkog.coupon.application.CouponQueryService;
 import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponResponse;
 import com.woowacourse.kkogkkog.coupon.domain.Category;
 import com.woowacourse.kkogkkog.coupon.domain.Condition;

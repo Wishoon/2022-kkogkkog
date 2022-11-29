@@ -1,25 +1,18 @@
-package coupon.application;
+package com.woowacourse.kkogkkog.coupon.application;
 
 import static com.woowacourse.kkogkkog.support.fixture.CouponFixture.READY_쿠폰;
 import static com.woowacourse.kkogkkog.support.fixture.CouponFixture.쿠폰을_생성하는_요청;
 import static com.woowacourse.kkogkkog.support.fixture.CouponFixture.쿠폰의_상태를_변경하는_요청;
 import static com.woowacourse.kkogkkog.support.fixture.MemberFixture.발신자_회원;
 import static com.woowacourse.kkogkkog.support.fixture.MemberFixture.수신자_회원;
-import static com.woowacourse.kkogkkog.support.fixture.MemberFixture.인증된_회원;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
-import com.woowacourse.kkogkkog.coupon.application.CouponService;
-import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
-import com.woowacourse.kkogkkog.coupon.domain.Category;
 import com.woowacourse.kkogkkog.coupon.domain.Condition;
-import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
-import com.woowacourse.kkogkkog.member.domain.Member;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
-import com.woowacourse.kkogkkog.member.domain.ProviderType;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
