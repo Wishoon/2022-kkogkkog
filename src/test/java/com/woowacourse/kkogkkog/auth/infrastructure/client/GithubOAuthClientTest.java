@@ -27,7 +27,7 @@ class GithubOAuthClientTest {
 
     @Test
     void OAuth_서버에서_받은_AccessToken을_통해서_OAuthProfile을_받을_수_있다() {
-        OAuthProfileResponse actual = githubOAuthClient.getProfile("ACCESS_TOKEN");
+        OAuthProfileResponse actual = githubOAuthClient.getProfile("ROOKIE_OAUTH_ACCESS_TOKEN");
 
         assertThat(actual).isInstanceOf(OAuthProfileResponse.class);
     }

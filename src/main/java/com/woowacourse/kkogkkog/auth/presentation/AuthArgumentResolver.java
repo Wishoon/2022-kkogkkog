@@ -20,10 +20,10 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(final MethodParameter parameter,
-                                  final ModelAndViewContainer mavContainer,
-                                  final NativeWebRequest webRequest,
-                                  final WebDataBinderFactory binderFactory) {
+    public Long resolveArgument(final MethodParameter parameter,
+                                final ModelAndViewContainer mavContainer,
+                                final NativeWebRequest webRequest,
+                                final WebDataBinderFactory binderFactory) {
         return authContext.getMemberId();
     }
 }
