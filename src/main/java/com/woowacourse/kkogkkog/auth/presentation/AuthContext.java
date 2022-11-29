@@ -10,11 +10,6 @@ public class AuthContext {
     private Long memberId;
     private Boolean approval;
 
-    public AuthContext(final Long memberId, final Boolean approval) {
-        this.memberId = memberId;
-        this.approval = approval;
-    }
-
     public Long getMemberId() {
         if (memberId == null) {
             throw new IllegalArgumentException();
