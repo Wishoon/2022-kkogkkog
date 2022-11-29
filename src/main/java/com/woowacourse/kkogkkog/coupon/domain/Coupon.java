@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Version;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class Coupon extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Condition condition;
+
+    @Version
+    private Long version;
 
     @Builder
     public Coupon(final Long id,
