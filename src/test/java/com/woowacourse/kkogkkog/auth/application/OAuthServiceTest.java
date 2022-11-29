@@ -7,11 +7,8 @@ import com.woowacourse.kkogkkog.auth.application.dto.request.AccessTokenRequest;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @IntegrationTest
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 class OAuthServiceTest {
 
     @Autowired

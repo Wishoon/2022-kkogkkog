@@ -1,8 +1,11 @@
-package com.woowacourse.kkogkkog.coupon.domain;
+package coupon.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.woowacourse.kkogkkog.coupon.domain.Category;
+import com.woowacourse.kkogkkog.coupon.domain.Condition;
+import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import org.junit.jupiter.api.Test;
 
 class CouponTest {

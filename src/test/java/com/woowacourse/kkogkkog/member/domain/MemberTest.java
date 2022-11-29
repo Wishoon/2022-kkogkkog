@@ -9,8 +9,9 @@ class MemberTest {
 
     @Test
     void 회원의_정보를_수정할_수_있다() {
-        Member member = new Member(null, "oauthId-1", "email@gmail.com", "username", "https://imageUrl.com",
-            ProviderType.GITHUB, false);
+        Member member = new Member(
+            null, "oauthId-1", "email@gmail.com", "username",
+            "https://imageUrl.com", ProviderType.GITHUB, false);
 
         Member actual = member.update("username_change", "https://imageUrl-change.com");
 
