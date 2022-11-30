@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum Category {
 
-    COFFEE("coffee"), MEAL("meal"), DRINK("drink");
+    COFFEE("coffee"), MEAL("meal"), DRINK("drink"), EVENT("event");
 
     private String value;
 

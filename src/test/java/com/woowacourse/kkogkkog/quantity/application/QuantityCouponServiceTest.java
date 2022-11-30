@@ -4,6 +4,7 @@ import static com.woowacourse.kkogkkog.support.fixture.MemberFixture.발신자_�
 import static com.woowacourse.kkogkkog.support.fixture.MemberFixture.수신자_회원;
 import static com.woowacourse.kkogkkog.support.fixture.QuantityCouponFixture.수량_쿠폰을_생성하는_요청;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
@@ -47,7 +48,9 @@ class QuantityCouponServiceTest {
 
         quantityCouponService.decreaseStock(COUPON_KEY_PREFIX + quantityCouponId, receiverId, quantityCouponId);
 
-        assertThat(quantityCouponRepository.getById(quantityCouponId).getStock()).isEqualTo(9);
+        assertAll(
+            () -> assertThat(quantityCouponRepository.getById(quantityCouponId).getStock()).isEqualTo(9),
+            () -> assertThat(couponRepository.findAll().size()).isEqualTo(1));
     }
 
     @Test
