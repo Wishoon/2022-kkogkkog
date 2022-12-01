@@ -10,14 +10,18 @@ import com.woowacourse.kkogkkog.annotation.IntegrationTest;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.quantity.application.dto.QuantityCouponCreateRequest;
+import com.woowacourse.kkogkkog.quantity.application.event.CouponCreatedEvent;
 import com.woowacourse.kkogkkog.quantity.entity.repository.QuantityCouponRepository;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.event.ApplicationEvents;
+import org.springframework.test.context.event.RecordApplicationEvents;
 
 @IntegrationTest
+@RecordApplicationEvents
 class QuantityCouponServiceTest {
 
     private static final String COUPON_KEY_PREFIX = "QUANTITY_COUPON_";
@@ -30,6 +34,8 @@ class QuantityCouponServiceTest {
     private CouponRepository couponRepository;
     @Autowired
     private QuantityCouponRepository quantityCouponRepository;
+    @Autowired
+    private ApplicationEvents events;
 
     @Test
     void 수량_쿠폰을_생성할_수_있다() {
@@ -50,7 +56,8 @@ class QuantityCouponServiceTest {
 
         assertAll(
             () -> assertThat(quantityCouponRepository.getById(quantityCouponId).getStock()).isEqualTo(9),
-            () -> assertThat(couponRepository.findAll().size()).isEqualTo(1));
+            () -> assertThat(couponRepository.findAll().size()).isEqualTo(1),
+            () -> assertThat(events.stream(CouponCreatedEvent.class).count()).isEqualTo(1));
     }
 
     @Test
