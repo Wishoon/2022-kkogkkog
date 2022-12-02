@@ -7,11 +7,16 @@ import com.woowacourse.kkogkkog.coupon.domain.Condition;
 import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
+import com.woowacourse.kkogkkog.quantity.application.event.CouponCreatedEvent;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.event.TransactionPhase;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @RequiredArgsConstructor
 @Service
@@ -33,20 +38,12 @@ public class CouponService {
         }
     }
 
-    private static List<Coupon> createCoupons(final CouponCreateRequest request, final Long senderId) {
-        return request.getReceiverIds().stream()
-            .map(receiverId -> createCoupon(request, senderId, receiverId))
-            .collect(Collectors.toList());
-    }
-
-    private static Coupon createCoupon(final CouponCreateRequest request, final Long senderId, final Long receiverId) {
-        return Coupon.builder()
-            .senderId(senderId)
-            .receiverId(receiverId)
-            .content(request.getContent())
-            .category(Category.findCategory(request.getCategory()))
-            .condition(Condition.READY)
-            .build();
+    @Async
+    @Transactional
+    @TransactionalEventListener(value = CouponCreatedEvent.class, phase = TransactionPhase.AFTER_COMMIT)
+    public void create(final CouponCreatedEvent event) {
+        couponRepository.save(
+            createCoupon(event.getSerialNumber(), event.getSenderId(), event.getReceiverId(), event.getContent()));
     }
 
     @Transactional
@@ -63,5 +60,34 @@ public class CouponService {
         if (!memberRepository.existsById(invokeMemberId)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    private static List<Coupon> createCoupons(final CouponCreateRequest request, final Long senderId) {
+        return request.getReceiverIds().stream()
+            .map(receiverId -> createCoupon(request, senderId, receiverId))
+            .collect(Collectors.toList());
+    }
+
+    private static Coupon createCoupon(final CouponCreateRequest request, final Long senderId, final Long receiverId) {
+        return Coupon.builder()
+            .serialNumber(UUID.randomUUID())
+            .senderId(senderId)
+            .receiverId(receiverId)
+            .content(request.getContent())
+            .category(Category.findCategory(request.getCategory()))
+            .condition(Condition.READY)
+            .build();
+    }
+
+    private static Coupon createCoupon(final UUID serialNumber, Long senderId,
+                                       final Long receiverId, final String content) {
+        return Coupon.builder()
+            .serialNumber(serialNumber)
+            .senderId(senderId)
+            .receiverId(receiverId)
+            .content(content)
+            .category(Category.EVENT)
+            .condition(Condition.READY)
+            .build();
     }
 }

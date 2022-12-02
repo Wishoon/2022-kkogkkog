@@ -2,6 +2,7 @@ package com.woowacourse.kkogkkog.coupon.domain;
 
 import com.woowacourse.kkogkkog.common.base.BaseEntity;
 import java.util.Objects;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,6 +25,9 @@ public class Coupon extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "serial_number", columnDefinition = "BINARY(16)", nullable = false)
+    private UUID serialNumber;
+
     @Column(name = "sender_id", nullable = false)
     private Long senderId;
 
@@ -44,6 +48,7 @@ public class Coupon extends BaseEntity {
 
     @Builder
     public Coupon(final Long id,
+                  final UUID serialNumber,
                   final Long senderId,
                   final Long receiverId,
                   final String content,
@@ -51,6 +56,7 @@ public class Coupon extends BaseEntity {
                   final Condition condition) {
         validate(senderId, receiverId);
         this.id = id;
+        this.serialNumber = serialNumber;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
@@ -68,6 +74,6 @@ public class Coupon extends BaseEntity {
         condition.updateValidate(invokeCondition, invokeMemberId, senderId);
 
         condition = Condition.findCondition(invokeCondition);
-        return new Coupon(id, senderId, receiverId, content, category, condition);
+        return new Coupon(id, serialNumber, senderId, receiverId, content, category, condition);
     }
 }

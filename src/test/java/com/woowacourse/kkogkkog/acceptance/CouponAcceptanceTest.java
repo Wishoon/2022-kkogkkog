@@ -4,6 +4,8 @@ import static com.woowacourse.kkogkkog.acceptance.fixture.CouponStepDefinition.�
 import static com.woowacourse.kkogkkog.acceptance.fixture.CouponStepDefinition.쿠폰을_발급한다;
 import static com.woowacourse.kkogkkog.acceptance.fixture.CouponStepDefinition.쿠폰의_상태를_변경한다;
 import static com.woowacourse.kkogkkog.acceptance.fixture.MemberStepDefinition.로그인을_한다;
+import static com.woowacourse.kkogkkog.acceptance.fixture.QuantityCouponStepDefinition.수량_쿠폰을_발급한다;
+import static com.woowacourse.kkogkkog.acceptance.fixture.QuantityCouponStepDefinition.수량_쿠폰의_재고를_감소한다;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.woowacourse.kkogkkog.annotation.AcceptanceTest;
@@ -65,5 +67,16 @@ public class CouponAcceptanceTest {
         쿠폰의_상태를_변경한다(senderToken, 1L, Condition.FINISH.getValue());
 
         assertThat(쿠폰을_단건_조회한다(senderToken, 1L).getCondition()).isEqualTo(Condition.FINISH.getValue());
+    }
+
+    @Test
+    void 수신자가_수량_쿠폰을_받을_경우_수량쿠폰의_재고가_감소하며_수신자에게_쿠폰이_생성된다() {
+        String senderToken = 로그인을_한다("github", "ROOKIE_OAUTH_CODE");
+        String receiverToken = 로그인을_한다("github", "ROMA_OAUTH_CODE");
+        Long quantityCouponId = 수량_쿠폰을_발급한다(senderToken, "수량 쿠폰의 내용", "00 이벤트 쿠폰", 10);
+
+        수량_쿠폰의_재고를_감소한다(receiverToken, quantityCouponId);
+
+        assertThat(쿠폰을_단건_조회한다(senderToken, 1L).getCouponId()).isEqualTo(1L);
     }
 }

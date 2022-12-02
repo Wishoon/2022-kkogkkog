@@ -6,6 +6,7 @@ import com.woowacourse.kkogkkog.coupon.domain.Category;
 import com.woowacourse.kkogkkog.coupon.domain.Condition;
 import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import java.util.List;
+import java.util.UUID;
 
 public enum CouponFixture {
 
@@ -24,16 +25,18 @@ public enum CouponFixture {
     }
 
     public static Coupon READY_쿠폰(Long senderId, Long receiverId) {
-        return new Coupon(null, senderId, receiverId, READY_쿠폰.content, READY_쿠폰.category, READY_쿠폰.condition);
+        return new Coupon(null, UUID.randomUUID(), senderId, receiverId,
+            READY_쿠폰.content, READY_쿠폰.category, READY_쿠폰.condition);
     }
 
     public static Coupon IN_PROGRESS_쿠폰(Long senderId, Long receiverId) {
-        return new Coupon(null, senderId, receiverId, IN_PROGRESS_쿠폰.content, IN_PROGRESS_쿠폰.category,
-            IN_PROGRESS_쿠폰.condition);
+        return new Coupon(null, UUID.randomUUID(), senderId, receiverId,
+            IN_PROGRESS_쿠폰.content, IN_PROGRESS_쿠폰.category, IN_PROGRESS_쿠폰.condition);
     }
 
     public static Coupon FINISH_쿠폰(Long senderId, Long receiverId) {
-        return new Coupon(null, senderId, receiverId, FINISH_쿠폰.content, FINISH_쿠폰.category, FINISH_쿠폰.condition);
+        return new Coupon(null, UUID.randomUUID(), senderId, receiverId,
+            FINISH_쿠폰.content, FINISH_쿠폰.category, FINISH_쿠폰.condition);
     }
 
     // 쿠폰 생성 요청

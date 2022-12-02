@@ -31,8 +31,9 @@ public class QuantityCouponController {
     }
 
     @PutMapping("/{quantityCouponId}/stock")
-    public ResponseEntity<Void> decreaseStock(@PathVariable Long quantityCouponId) {
-        quantityCouponService.decreaseStock(COUPON_KEY_PREFIX + quantityCouponId, quantityCouponId);
+    public ResponseEntity<Void> decreaseStock(@AuthMember Long memberId,
+                                              @PathVariable Long quantityCouponId) {
+        quantityCouponService.decreaseStock(COUPON_KEY_PREFIX + quantityCouponId, memberId, quantityCouponId);
 
         return ResponseEntity.noContent().build();
     }
