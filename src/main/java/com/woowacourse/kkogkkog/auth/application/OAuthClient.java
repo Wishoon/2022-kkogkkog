@@ -1,7 +1,7 @@
 package com.woowacourse.kkogkkog.auth.application;
 
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthAccessTokenResponse;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthAccessTokenResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthProfileResponse;
 
 public interface OAuthClient {
 

@@ -2,9 +2,9 @@ package com.woowacourse.kkogkkog.auth.infrastructure.client;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.woowacourse.kkogkkog.auth.application.OAuthClient;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.request.OAuthAccessTokenRequest;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthAccessTokenResponse;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.request.OAuthAccessTokenRequest;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthAccessTokenResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthProfileResponse;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

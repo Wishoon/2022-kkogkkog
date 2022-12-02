@@ -1,7 +1,7 @@
 package com.woowacourse.kkogkkog.auth.application;
 
 import com.woowacourse.kkogkkog.auth.application.dto.response.AccessTokenResponse;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthProfileResponse;
 import com.woowacourse.kkogkkog.auth.infrastructure.token.TokenProvider;
 import com.woowacourse.kkogkkog.member.application.MemberService;
 import com.woowacourse.kkogkkog.member.application.dto.MemberCreateOrUpdateRequest;
