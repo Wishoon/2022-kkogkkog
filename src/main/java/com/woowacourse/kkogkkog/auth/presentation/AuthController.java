@@ -4,7 +4,7 @@ import com.woowacourse.kkogkkog.auth.application.AuthService;
 import com.woowacourse.kkogkkog.auth.application.OAuthService;
 import com.woowacourse.kkogkkog.auth.application.dto.request.AccessTokenRequest;
 import com.woowacourse.kkogkkog.auth.application.dto.response.AccessTokenResponse;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.response.OAuthProfileResponse;
+import com.woowacourse.kkogkkog.auth.application.dto.response.OAuthProfileResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

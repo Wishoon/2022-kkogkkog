@@ -1,8 +1,8 @@
 package com.woowacourse.kkogkkog.support.fake;
 
+import com.woowacourse.kkogkkog.auth.application.dto.request.OAuthAccessTokenRequest;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.GithubOAuthClient.GithubAccessTokenResponse;
 import com.woowacourse.kkogkkog.auth.infrastructure.client.GithubOAuthClient.GithubProfileResponse;
-import com.woowacourse.kkogkkog.auth.infrastructure.client.dto.request.OAuthAccessTokenRequest;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
