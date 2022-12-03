@@ -8,9 +8,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
 import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponResponse;
+import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponsResponse;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 
@@ -43,5 +46,17 @@ class CouponQueryServiceTest {
 
         assertThatThrownBy(() -> couponQueryService.find(999L))
             .isInstanceOf(InvalidDataAccessApiUsageException.class);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"sender:1", "receiver:0"}, delimiter = ':')
+    void 회원의_ID와_요청_타입을_통해서_쿠폰들을_조회할_수_있다(final String requestType, final int extract) {
+        Long senderId = memberRepository.save(발신자_회원()).getId();
+        Long receiverId = memberRepository.save(수신자_회원()).getId();
+        couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
+
+        CouponsResponse actual = couponQueryService.findOfMember(senderId, requestType);
+
+        assertThat(actual.getData()).hasSize(extract);
     }
 }
