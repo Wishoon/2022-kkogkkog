@@ -1,6 +1,7 @@
 package com.woowacourse.kkogkkog.coupon.application.dto.response;
 
 import com.woowacourse.kkogkkog.coupon.domain.Coupon;
+import com.woowacourse.kkogkkog.coupon.domain.repository.data.CouponMemberData;
 import com.woowacourse.kkogkkog.member.domain.Member;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -30,6 +31,17 @@ public class CouponResponse {
             coupon.getCategory().getValue(),
             coupon.getCondition().getValue(),
             coupon.getCreatedTime());
+    }
+
+    public static CouponResponse createResponse(final CouponMemberData data) {
+        return new CouponResponse(
+            data.getCouponId(),
+            new CouponMemberResponse(data.getSenderId(), data.getSenderName(), data.getSenderImageUrl()),
+            new CouponMemberResponse(data.getReceiverId(), data.getReceiverName(), data.getReceiverImageUrl()),
+            data.getContent(),
+            data.getCategory().getValue(),
+            data.getCondition().getValue(),
+            data.getCreatedTime());
     }
 
     @AllArgsConstructor
