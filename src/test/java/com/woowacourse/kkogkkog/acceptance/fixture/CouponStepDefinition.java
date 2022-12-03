@@ -8,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponResponse;
+import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponsResponse;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import java.util.List;
@@ -44,5 +45,16 @@ public class CouponStepDefinition {
         ExtractableResponse<Response> response = invokePutWithToken(
             "/api/coupons/" + couponId + "/condition", token, new CouponConditionUpdateRequest(condition));
         assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static CouponsResponse 조회_속성별_쿠폰_목록을_조회한다(
+        final String token,
+        final String requestType) {
+
+        ExtractableResponse<Response> response = invokeGetWithToken(
+            "/api/coupons/user?requestType=" + requestType, token);
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        return response.body().jsonPath().getObject(".", CouponsResponse.class);
     }
 }

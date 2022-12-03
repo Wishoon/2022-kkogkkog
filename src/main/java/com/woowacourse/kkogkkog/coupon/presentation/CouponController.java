@@ -6,6 +6,7 @@ import com.woowacourse.kkogkkog.coupon.application.CouponService;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponConditionUpdateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateRequest;
 import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponResponse;
+import com.woowacourse.kkogkkog.coupon.application.dto.response.CouponsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -46,5 +48,12 @@ public class CouponController {
         couponService.updateCondition(couponId, memberId, request);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<CouponsResponse> selectOfMember(@AuthMember Long memberId,
+                                                          @RequestParam String requestType) {
+        CouponsResponse response = couponQueryService.findOfMember(memberId, requestType);
+        return ResponseEntity.ok(response);
     }
 }

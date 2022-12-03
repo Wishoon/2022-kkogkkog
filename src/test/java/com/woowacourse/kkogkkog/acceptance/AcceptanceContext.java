@@ -15,11 +15,11 @@ public class AcceptanceContext {
             .extract();
     }
 
-    public static ExtractableResponse<Response> invokeGetWithToken(String path, String token, Object... params) {
+    public static ExtractableResponse<Response> invokeGetWithToken(String path, String token) {
         return RestAssured.given().log().all()
             .auth().oauth2(token)
             .when()
-            .get(path, params)
+            .get(path)
             .then().log().all()
             .extract();
     }
