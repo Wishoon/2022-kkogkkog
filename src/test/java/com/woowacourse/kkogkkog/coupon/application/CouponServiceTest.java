@@ -16,6 +16,7 @@ import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateReque
 import com.woowacourse.kkogkkog.coupon.domain.Condition;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
+import com.woowacourse.kkogkkog.reservation.application.event.CouponConditionUpdatedRequest;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -64,6 +65,19 @@ class CouponServiceTest {
         couponService.updateCondition(couponId, receiverId, 쿠폰의_상태를_변경하는_요청(Condition.FINISH.getValue()));
 
         assertThat(couponRepository.getById(couponId).getCondition()).isEqualTo(Condition.FINISH);
+    }
+
+    @Test
+    void 쿠폰의_상태를_이벤트_요청을_통해_변경할_수_있다() {
+        Long senderId = memberRepository.save(발신자_회원()).getId();
+        Long receiverId = memberRepository.save(수신자_회원()).getId();
+        Long couponId = couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
+
+        CouponConditionUpdatedRequest actual = new CouponConditionUpdatedRequest(couponId, receiverId,
+            Condition.IN_PROGRESS.getValue());
+        couponService.updateCondition(actual);
+
+        assertThat(couponRepository.getById(couponId).getCondition()).isEqualTo(Condition.IN_PROGRESS);
     }
 
     @Test

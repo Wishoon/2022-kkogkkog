@@ -8,10 +8,12 @@ import com.woowacourse.kkogkkog.coupon.domain.Coupon;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.quantity.application.event.CouponCreatedEvent;
+import com.woowacourse.kkogkkog.reservation.application.event.CouponConditionUpdatedRequest;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +62,15 @@ public class CouponService {
         if (!memberRepository.existsById(invokeMemberId)) {
             throw new IllegalArgumentException();
         }
+    }
+
+    @Transactional
+    @EventListener
+    public void updateCondition(final CouponConditionUpdatedRequest event) {
+        validateExistsMember(event.getMemberId());
+        Coupon coupon = couponRepository.getById(event.getCouponId());
+
+        coupon.updateCondition(event.getCondition(), event.getMemberId());
     }
 
     private static List<Coupon> createCoupons(final CouponCreateRequest request, final Long senderId) {
