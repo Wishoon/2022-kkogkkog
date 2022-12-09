@@ -5,7 +5,6 @@ import com.woowacourse.kkogkkog.reservation.application.event.CouponConditionUpd
 import com.woowacourse.kkogkkog.reservation.domain.Condition;
 import com.woowacourse.kkogkkog.reservation.domain.Reservation;
 import com.woowacourse.kkogkkog.reservation.domain.repository.ReservationRepository;
-import com.woowacourse.kkogkkog.reservation.domain.strategy.ConditionTypeRepository;
 import com.woowacourse.kkogkkog.reservation.domain.validator.ReservationValidator;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -20,7 +19,6 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final ReservationValidator reservationValidator;
-    private final ConditionTypeRepository conditionTypeRepository;
     private final Clock clock;
     private final ApplicationEventPublisher eventPublisher;
 
@@ -47,7 +45,7 @@ public class ReservationService {
             .couponId(request.getCouponId())
             .message(request.getMessage())
             .appointedTime(request.getAppointedTime())
-            .condition(new Condition("REQUESTED", conditionTypeRepository))
+            .condition(Condition.REQUESTED)
             .build();
     }
 }

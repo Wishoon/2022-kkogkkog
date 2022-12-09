@@ -3,8 +3,9 @@ package com.woowacourse.kkogkkog.reservation.domain;
 import com.woowacourse.kkogkkog.common.base.BaseEntity;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,7 +35,8 @@ public class Reservation extends BaseEntity {
     @Column(name = "appointed_time", nullable = false)
     private LocalDateTime appointedTime;
 
-    @Embedded
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "condition", nullable = false)
     private Condition condition;
 
     @Builder

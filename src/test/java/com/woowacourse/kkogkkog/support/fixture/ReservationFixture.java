@@ -2,12 +2,11 @@ package com.woowacourse.kkogkkog.support.fixture;
 
 import com.woowacourse.kkogkkog.reservation.application.dto.ReservationCreateRequest;
 import com.woowacourse.kkogkkog.reservation.domain.Condition;
-import com.woowacourse.kkogkkog.reservation.domain.strategy.ConditionTypeRepository;
 import java.time.LocalDateTime;
 
 public enum ReservationFixture {
 
-    REQUESTED_예약("예약을 할 때 작성하는 메시지", new Condition("REQUESTED", new ConditionTypeRepository(null))),
+    REQUESTED_예약("예약을 할 때 작성하는 메시지", Condition.REQUESTED),
     ;
 
     private String message;
