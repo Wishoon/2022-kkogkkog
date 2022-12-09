@@ -22,9 +22,10 @@ public class QuantityCouponAcceptanceTest {
 
     @Test
     void 발급된_수량_쿠폰의_재고를_감소시킬_수_있다() {
-        String memberToken = 로그인을_한다("github", "ROOKIE_OAUTH_CODE");
-        Long actual = 수량_쿠폰을_발급한다(memberToken, "수량 쿠폰의 내용", "00 이벤트 쿠폰", 10);
+        String senderToken = 로그인을_한다("github", "ROOKIE_OAUTH_CODE");
+        String receiverToken = 로그인을_한다("github", "ROMA_OAUTH_CODE");
+        Long actual = 수량_쿠폰을_발급한다(senderToken, "수량 쿠폰의 내용", "00 이벤트 쿠폰", 10);
 
-        수량_쿠폰의_재고를_감소한다(memberToken, actual);
+        수량_쿠폰의_재고를_감소한다(receiverToken, actual);
     }
 }
