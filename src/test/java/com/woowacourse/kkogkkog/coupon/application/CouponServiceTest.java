@@ -86,7 +86,7 @@ class CouponServiceTest {
         Long receiverId = memberRepository.save(수신자_회원()).getId();
         Long couponId = couponRepository.save(IN_PROGRESS_쿠폰(senderId, receiverId)).getId();
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(32);
         Future<?> future1 = executor.submit(() -> couponService.updateCondition(
             couponId, receiverId, new CouponConditionUpdateRequest(Condition.READY.getValue())));
         Future<?> future2 = executor.submit(() -> couponService.updateCondition(
