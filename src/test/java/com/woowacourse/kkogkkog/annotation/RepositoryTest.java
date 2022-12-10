@@ -3,6 +3,7 @@ package com.woowacourse.kkogkkog.annotation;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 
 import com.woowacourse.kkogkkog.common.config.JpaConfig;
+import com.woowacourse.kkogkkog.support.config.TestTimeConfig;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -16,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @DataJpaTest
 @Retention(RetentionPolicy.RUNTIME)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@Import({JpaConfig.class})
+@Import({JpaConfig.class, TestTimeConfig.class})
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public @interface RepositoryTest {
 

@@ -16,6 +16,7 @@ import com.woowacourse.kkogkkog.coupon.application.dto.request.CouponCreateReque
 import com.woowacourse.kkogkkog.coupon.domain.Condition;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
+import com.woowacourse.kkogkkog.reservation.application.event.CouponConditionUpdatedRequest;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -67,12 +68,25 @@ class CouponServiceTest {
     }
 
     @Test
+    void 쿠폰의_상태를_이벤트_요청을_통해_변경할_수_있다() {
+        Long senderId = memberRepository.save(발신자_회원()).getId();
+        Long receiverId = memberRepository.save(수신자_회원()).getId();
+        Long couponId = couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
+
+        CouponConditionUpdatedRequest actual = new CouponConditionUpdatedRequest(couponId, receiverId,
+            Condition.IN_PROGRESS.getValue());
+        couponService.updateCondition(actual);
+
+        assertThat(couponRepository.getById(couponId).getCondition()).isEqualTo(Condition.IN_PROGRESS);
+    }
+
+    @Test
     void 쿠폰의_상태를_변경할_때_먼저_요청된_스레드의_값만_반영된다() throws InterruptedException {
         Long senderId = memberRepository.save(발신자_회원()).getId();
         Long receiverId = memberRepository.save(수신자_회원()).getId();
         Long couponId = couponRepository.save(IN_PROGRESS_쿠폰(senderId, receiverId)).getId();
 
-        ExecutorService executor = Executors.newFixedThreadPool(2);
+        ExecutorService executor = Executors.newFixedThreadPool(32);
         Future<?> future1 = executor.submit(() -> couponService.updateCondition(
             couponId, receiverId, new CouponConditionUpdateRequest(Condition.READY.getValue())));
         Future<?> future2 = executor.submit(() -> couponService.updateCondition(
