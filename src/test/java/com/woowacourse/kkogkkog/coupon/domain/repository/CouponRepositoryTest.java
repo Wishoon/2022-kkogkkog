@@ -32,7 +32,7 @@ class CouponRepositoryTest {
         couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
         couponRepository.save(READY_쿠폰(senderId, otherId)).getId();
 
-        List<CouponMemberData> actual = couponRepository.findByMemberIdAndRequestType(senderId, "sender");
+        List<CouponMemberData> actual = couponRepository.findAllByMemberIdAndRequestType(senderId, "sender");
 
         assertThat(actual).hasSize(2);
     }
@@ -45,7 +45,7 @@ class CouponRepositoryTest {
         couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
         couponRepository.save(READY_쿠폰(senderId, otherId)).getId();
 
-        List<CouponMemberData> actual = couponRepository.findByMemberIdAndRequestType(receiverId, "receiver");
+        List<CouponMemberData> actual = couponRepository.findAllByMemberIdAndRequestType(receiverId, "receiver");
 
         assertThat(actual).hasSize(1);
     }
@@ -58,7 +58,7 @@ class CouponRepositoryTest {
         couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
         couponRepository.save(READY_쿠폰(senderId, otherId)).getId();
 
-        assertThatThrownBy(() -> couponRepository.findByMemberIdAndRequestType(receiverId, "not-type"))
+        assertThatThrownBy(() -> couponRepository.findAllByMemberIdAndRequestType(receiverId, "not-type"))
             .isInstanceOf(InvalidDataAccessApiUsageException.class);
     }
 
