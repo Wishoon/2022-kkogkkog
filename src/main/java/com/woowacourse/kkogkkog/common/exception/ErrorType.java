@@ -9,6 +9,9 @@ public enum ErrorType {
     AUTH_NOT_AUTHENTICATED(1002, "인증 정보가 존재하지 않습니다."),
     AUTH_FORBIDDEN(1003, "접근 권한이 없습니다."),
 
+
+    RESERVATION_NOT_FOUND(6001, "예약 정보가 존재하지 않습니다."),
+
     COMMON_INVALID_PATH(9001, "요청 경로가 유효하지 않습니다."),
     COMMON_INVALID_HTTP(9002, "http 요청이 유효하지 않습니다."),
     COMMON_UNHANDLED(9999, "예상하지 못한 예외가 발생했습니다.");
