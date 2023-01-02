@@ -1,6 +1,6 @@
 package com.woowacourse.kkogkkog.support.fixture;
 
-import com.woowacourse.kkogkkog.reservation.application.dto.ReservationCreateRequest;
+import com.woowacourse.kkogkkog.reservation.application.dto.request.ReservationCreateRequest;
 import com.woowacourse.kkogkkog.reservation.domain.Condition;
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.woowacourse.kkogkkog.reservation.application.dto;
+package com.woowacourse.kkogkkog.reservation.application.dto.request;
 
 import java.time.LocalDateTime;
 import lombok.AccessLevel;

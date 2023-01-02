@@ -1,6 +1,6 @@
 package com.woowacourse.kkogkkog.reservation.application;
 
-import com.woowacourse.kkogkkog.reservation.application.dto.ReservationCreateRequest;
+import com.woowacourse.kkogkkog.reservation.application.dto.request.ReservationCreateRequest;
 import com.woowacourse.kkogkkog.reservation.application.event.CouponConditionUpdatedRequest;
 import com.woowacourse.kkogkkog.reservation.domain.Condition;
 import com.woowacourse.kkogkkog.reservation.domain.Reservation;
