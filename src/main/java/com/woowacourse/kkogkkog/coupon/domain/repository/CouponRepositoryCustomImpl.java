@@ -20,7 +20,7 @@ public class CouponRepositoryCustomImpl implements CouponRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CouponMemberData> findByMemberIdAndRequestType(final Long memberId, final String requestType) {
+    public List<CouponMemberData> findAllByMemberIdAndRequestType(final Long memberId, final String requestType) {
         return queryFactory
             .select(createCouponMemberResponse())
             .from(coupon)

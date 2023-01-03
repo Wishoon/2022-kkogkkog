@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.woowacourse.kkogkkog.annotation.IntegrationTest;
 import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
-import com.woowacourse.kkogkkog.reservation.application.dto.ReservationCreateRequest;
+import com.woowacourse.kkogkkog.reservation.application.dto.request.ReservationCreateRequest;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -30,7 +30,7 @@ public class CouponQueryService {
     }
 
     public CouponsResponse findOfMember(final Long memberId, final String requestType) {
-        List<CouponMemberData> response = couponRepository.findByMemberIdAndRequestType(memberId, requestType);
+        List<CouponMemberData> response = couponRepository.findAllByMemberIdAndRequestType(memberId, requestType);
 
         return CouponsResponse.createResponse(
             response.stream()

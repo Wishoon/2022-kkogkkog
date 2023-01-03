@@ -5,5 +5,5 @@ import java.util.List;
 
 public interface CouponRepositoryCustom {
 
-    List<CouponMemberData> findByMemberIdAndRequestType(final Long memberId, final String requestType);
+    List<CouponMemberData> findAllByMemberIdAndRequestType(final Long memberId, final String requestType);
 }
