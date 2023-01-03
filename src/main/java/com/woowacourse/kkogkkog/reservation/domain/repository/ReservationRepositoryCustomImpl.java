@@ -6,8 +6,10 @@ import com.querydsl.core.types.QBean;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.woowacourse.kkogkkog.coupon.domain.QCoupon;
 import com.woowacourse.kkogkkog.member.domain.QMember;
+import com.woowacourse.kkogkkog.reservation.domain.Condition;
 import com.woowacourse.kkogkkog.reservation.domain.QReservation;
 import com.woowacourse.kkogkkog.reservation.domain.repository.data.ReservationCouponMemberData;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 
@@ -31,6 +33,22 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
             .join(sender).on(coupon.senderId.eq(sender.id))
             .join(receiver).on(coupon.receiverId.eq(receiver.id))
             .where(memberIdEq(memberId, requestType))
+            .fetch();
+    }
+
+    @Override
+    public List<ReservationCouponMemberData> findAllByMemberIdAndRequestTypeAndNowDateTime(final Long memberId,
+                                                                                           final String requestType,
+                                                                                           final LocalDateTime nowDateTime) {
+        return queryFactory
+            .select(createReservationCouponMemberData())
+            .from(reservation)
+            .join(coupon).on(reservation.couponId.eq(coupon.id))
+            .join(sender).on(coupon.senderId.eq(sender.id))
+            .join(receiver).on(coupon.receiverId.eq(receiver.id))
+            .where(memberIdEq(memberId, requestType))
+            .where(reservation.condition.eq(Condition.APPROVED))
+            .where(reservation.appointedTime.goe(nowDateTime))
             .fetch();
     }
 
