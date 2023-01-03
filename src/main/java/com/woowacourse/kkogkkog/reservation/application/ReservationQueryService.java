@@ -6,6 +6,7 @@ import com.woowacourse.kkogkkog.reservation.application.dto.response.Reservation
 import com.woowacourse.kkogkkog.reservation.domain.repository.ReservationRepository;
 import com.woowacourse.kkogkkog.reservation.domain.repository.data.ReservationCouponMemberData;
 import com.woowacourse.kkogkkog.reservation.exeception.ReservationNotFoundException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -35,6 +36,19 @@ public class ReservationQueryService {
         List<ReservationCouponMemberData> responses = new ArrayList<>();
         for (String requestType : List.of(SENDER, RECEIVER)) {
             responses.addAll(reservationRepository.findAllByMemberIdAndRequestType(memberId, requestType));
+        }
+
+        return new ReservationsResponse(responses.stream()
+            .sorted(Comparator.comparing(ReservationCouponMemberData::getAppointedTime))
+            .map(ReservationResponse::createResponse)
+            .collect(Collectors.toList()));
+    }
+
+    public ReservationsResponse findAllByMemberAndAfterDateTime(final Long memberId) {
+        List<ReservationCouponMemberData> responses = new ArrayList<>();
+        for (String requestType : List.of(SENDER, RECEIVER)) {
+            responses.addAll(reservationRepository.findAllByMemberIdAndRequestTypeAndNowDateTime(
+                memberId, requestType, LocalDateTime.now()));
         }
 
         return new ReservationsResponse(responses.stream()
