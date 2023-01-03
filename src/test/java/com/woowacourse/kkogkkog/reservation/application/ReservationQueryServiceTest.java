@@ -10,6 +10,7 @@ import com.woowacourse.kkogkkog.coupon.domain.repository.CouponRepository;
 import com.woowacourse.kkogkkog.member.domain.MemberRepository;
 import com.woowacourse.kkogkkog.reservation.application.dto.request.ReservationCreateRequest;
 import com.woowacourse.kkogkkog.reservation.application.dto.response.ReservationResponse;
+import com.woowacourse.kkogkkog.reservation.application.dto.response.ReservationsResponse;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,18 @@ class ReservationQueryServiceTest {
         ReservationResponse actual = reservationQueryService.find(reservationId);
 
         assertThat(actual.getReservationId()).isEqualTo(reservationId);
+    }
+
+    @Test
+    void 회원_ID를_통해서_예약_정보들을_조회할_수_있다() {
+        Long senderId = memberRepository.save(발신자_회원()).getId();
+        Long receiverId = memberRepository.save(수신자_회원()).getId();
+        Long couponId = couponRepository.save(READY_쿠폰(senderId, receiverId)).getId();
+        reservationService.save(
+            receiverId, new ReservationCreateRequest(couponId, "예약 메시지", LocalDateTime.now().plusDays(1)));
+
+        ReservationsResponse actual = reservationQueryService.findAllByMember(senderId);
+
+        assertThat(actual.getData()).hasSize(1);
     }
 }
