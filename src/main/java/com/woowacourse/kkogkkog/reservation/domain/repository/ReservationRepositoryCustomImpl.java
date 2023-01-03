@@ -11,6 +11,7 @@ import com.woowacourse.kkogkkog.reservation.domain.QReservation;
 import com.woowacourse.kkogkkog.reservation.domain.repository.data.ReservationCouponMemberData;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -22,6 +23,20 @@ public class ReservationRepositoryCustomImpl implements ReservationRepositoryCus
     private final QMember receiver = new QMember("receiver");
 
     private final JPAQueryFactory queryFactory;
+
+    @Override
+    public Optional<ReservationCouponMemberData> findFetchById(final Long reservationId) {
+        ReservationCouponMemberData reservationCouponMemberData = queryFactory
+            .select(createReservationCouponMemberData())
+            .from(reservation)
+            .join(coupon).on(reservation.couponId.eq(coupon.id))
+            .join(sender).on(coupon.senderId.eq(sender.id))
+            .join(receiver).on(coupon.receiverId.eq(receiver.id))
+            .where(reservation.id.eq(reservationId))
+            .fetchOne();
+
+        return Optional.ofNullable(reservationCouponMemberData);
+    }
 
     @Override
     public List<ReservationCouponMemberData> findAllByMemberIdAndRequestType(final Long memberId,
