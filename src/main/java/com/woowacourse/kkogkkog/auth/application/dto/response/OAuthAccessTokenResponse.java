@@ -1,16 +1,15 @@
 package com.woowacourse.kkogkkog.auth.application.dto.response;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class OAuthAccessTokenResponse {
 
     private String accessToken;
 
-    public OAuthAccessTokenResponse(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }
